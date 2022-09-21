@@ -14,11 +14,19 @@
             text-align: center;
         }
 
-        button {
-            display: block;
+        #btn {
             width: 100%;
             padding: 10px 0;
             margin: 30px auto;
+            text-align: center;
+            height: 30px;
+            line-height: 30px;
+            border: 1px solid #ccc;
+            background-color: #eee;
+            border-radius: 8px;
+        }
+        #btn:hover {
+            background-color: #e3e3e3;
         }
         p {
             font-size: 14px;
@@ -43,7 +51,7 @@
     <p>被动拉伸：<span id="passive"></span></p>
 
     <!-- <p>有氧训练：<span>暂无</span></p> -->
-    <button id="btn">点击抽签</button>
+    <div id="btn">点击抽签</button>
 
     <script>
         // 3个抗阻训练动作（一个器械，一个杠铃或哑铃，一个自重）其中一个做动作讲解
