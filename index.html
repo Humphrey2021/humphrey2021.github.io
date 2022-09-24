@@ -6,18 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>模拟考试抽签</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
         body {
             padding: 20px;
+            overflow-x: hidden;
         }
 
         h3 {
             text-align: center;
+            line-height: 2;
         }
 
         #btn {
             width: 100%;
             padding: 10px 0;
-            margin: 30px auto;
+            margin: 20px auto;
             text-align: center;
             height: 30px;
             line-height: 30px;
@@ -30,6 +36,7 @@
         }
         p {
             font-size: 14px;
+            line-height: 2;
         }
         span {
             font-size: 14px;
@@ -37,6 +44,21 @@
         }
         em {
             display: none;
+        }
+
+        .all {
+            text-align: left;
+            margin-top: 30px;
+        }
+        .box {
+            padding-bottom: 50px;
+        }
+        .box p{
+            font-weight: 700;
+        }
+        .box div span {
+            margin-right: 10px;
+            font-weight: normal;
         }
     </style>
 </head>
@@ -49,9 +71,30 @@
     <p>动作保护：<span id="protect"></span></p>
     <p>主动拉伸：<span id="initiative"></span></p>
     <p>被动拉伸：<span id="passive"></span></p>
-    <p>有氧训练：<span>暂无</span></p>
+    <p>有氧训练：<span id="aerobic"></span></p>
 
     <div id="btn">点击抽签</button>
+
+    <div class="all">
+        <span>全部动作库</span>
+
+        <div class="box">
+            <p>器械训练动作</p>
+            <div class="qixie"></div>
+            <p>哑铃杠铃训练动作</p>
+            <div class="ygl"></div>
+            <p>自重训练动作</p>
+            <div class="zizhong"></div>
+            <p>动作保护</p>
+            <div class="baohu"></div>
+            <p>主动拉伸</p>
+            <div class="zhudong"></div>
+            <p>被动拉伸</p>
+            <div class="beidong"></div>
+            <p>有氧训练动作</p>
+            <div class="youyang"></div>
+        </div>
+    </div>
 
     <script>
         // 3个抗阻训练动作（一个器械，一个杠铃或哑铃，一个自重）其中一个做动作讲解
@@ -72,6 +115,13 @@
             '器械坐姿反飞鸟',
             '器械仰卧卷腹',
             '器械仰卧卷腹转体',
+            '史密斯机下蹲',
+            '器械坐姿腿推举',
+            '器械坐姿腿屈伸',
+            '器械腿弯举',
+            '器械腿内收',
+            '器械腿外展',
+            '史密斯机直立提踵',
         ] // 器械训练动作
         let barbell = [
             '杠铃站姿弯举',
@@ -90,6 +140,12 @@
             '杠铃直立划船',
             '哑铃站姿侧平举',
             '哑铃俯身飞鸟',
+            '哑铃下蹲',
+            '杠铃下蹲',
+            '哑铃后剪蹲',
+            '杠铃屈腿硬拉',
+            '杠铃直膝硬拉',
+            '哑铃提踵',
         ] // 杠铃或哑铃训练动作
         let deadWeight = [
             '俯卧撑',
@@ -100,6 +156,9 @@
             '仰卧卷腹转体',
             '仰卧举腿',
             '悬垂举腿',
+            '下蹲',
+            '前剪蹲',
+            '后剪蹲',
         ] // 自重训练动作
         let protect = [
             '单臂哑铃坐姿颈后臂屈伸（轻重量）',
@@ -110,14 +169,15 @@
             '哑铃上斜仰卧飞鸟（大重量）',
             '哑铃站姿推举（轻重量）',
             '哑铃站姿推举（大重量）',
-
+            '杠铃下蹲（轻重量）',
+            '杠铃下蹲（大重量）',
         ] // 动作保护
         let initiative = [
             '胸大肌', '斜方肌上束', '斜方肌中下束', '背阔肌', '竖脊肌', '腹直肌', '三角肌前束', '三角肌后束', '肱二头肌', '肱三头肌', '臀大肌', '股二头肌', '股四头肌', '腓肠肌', '髂腰肌',
         ] // 主动拉伸
         let passive = ['胸大肌', '三角肌前束', '肱二头肌', '肱三头肌', '臀大肌', '股四头肌', '股二头肌', '腓肠肌', '髂腰肌',] // 被动拉伸
-        // let aerobic = [] // 有氧训练
-
+        let aerobic = ['跑步机', '椭圆机', '台阶器', '固定自行车', '划船机',] // 有氧训练
+        
         function GetRandomNum(Min, Max) {
             let Range = Max - Min
             let Rand = Math.random()
@@ -135,6 +195,8 @@
         let pro = document.getElementById('protect')
         let init = document.getElementById('initiative')
         let pa = document.getElementById('passive')
+        let ae = document.getElementById('aerobic')
+        
         let em1 = document.getElementById('eq1')
         let em2 = document.getElementById('eq2')
         let em3 = document.getElementById('eq3')
@@ -152,10 +214,60 @@
             pro.innerHTML = protect[drawLots(protect) - 1]
             init.innerHTML = initiative[drawLots(initiative) - 1]
             pa.innerHTML = passive[drawLots(passive) - 1]
+            ae.innerHTML = aerobic[drawLots(aerobic) - 1]
 
             let em = document.getElementById(`eq${GetRandomNum(1, 3)}`)
             em.style.display = 'inline-block'
         }
+
+        let qixie = document.querySelector('.qixie')
+        equipment.forEach((item, index) => {
+            let spanNode = document.createElement('span')
+            spanNode.innerHTML = `${index + 1}. ${item}`
+            qixie.appendChild(spanNode)
+        })
+        
+        let ygl = document.querySelector('.ygl')
+        barbell.forEach((item, index) => {
+            let spanNode = document.createElement('span')
+            spanNode.innerHTML = `${index + 1}. ${item}`
+            ygl.appendChild(spanNode)
+        })
+
+        let zizhong = document.querySelector('.zizhong')
+        deadWeight.forEach((item, index) => {
+            let spanNode = document.createElement('span')
+            spanNode.innerHTML = `${index + 1}. ${item}`
+            zizhong.appendChild(spanNode)
+        })
+
+        let baohu = document.querySelector('.baohu')
+        protect.forEach((item, index) => {
+            let spanNode = document.createElement('span')
+            spanNode.innerHTML = `${index + 1}. ${item}`
+            baohu.appendChild(spanNode)
+        })
+
+        let zhudong = document.querySelector('.zhudong')
+        initiative.forEach((item, index) => {
+            let spanNode = document.createElement('span')
+            spanNode.innerHTML = `${index + 1}. ${item}`
+            zhudong.appendChild(spanNode)
+        })
+
+        let beidong = document.querySelector('.beidong')
+        passive.forEach((item, index) => {
+            let spanNode = document.createElement('span')
+            spanNode.innerHTML = `${index + 1}. ${item}`
+            beidong.appendChild(spanNode)
+        })
+        
+        let youyang = document.querySelector('.youyang')
+        aerobic.forEach((item, index) => {
+            let spanNode = document.createElement('span')
+            spanNode.innerHTML = `${index + 1}. ${item}`
+            youyang.appendChild(spanNode)
+        })
 
     </script>
 </body>
